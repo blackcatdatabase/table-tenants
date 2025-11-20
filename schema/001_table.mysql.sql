@@ -1,0 +1,16 @@
+-- Auto-generated from schema-map-mysql.psd1 (map@734a489)
+-- engine: mysql
+-- table:  tenants
+CREATE TABLE IF NOT EXISTS tenants (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(200) NOT NULL,
+  slug VARCHAR(200) NOT NULL,
+  slug_ci VARCHAR(200) GENERATED ALWAYS AS (LOWER(slug)) STORED,
+  status ENUM('active','suspended','deleted') NOT NULL DEFAULT 'active',
+  created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  version INT UNSIGNED NOT NULL DEFAULT 0,
+  deleted_at DATETIME(6) NULL,
+  is_live TINYINT(1) GENERATED ALWAYS AS (deleted_at IS NULL) STORED,
+  CONSTRAINT chk_tenants_version CHECK (version >= 0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
