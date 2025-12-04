@@ -57,13 +57,13 @@ final class Definitions {
     }
 
     /** @return array<int,array<int,string>> list of unique keys */
-    public static function uniqueKeys(): array { return [ [ 'slug_ci', 'is_live' ], [ 'id' ] ]; }
+    public static function uniqueKeys(): array { return [ [ 'slug_ci' ], [ 'slug_ci', 'is_live' ], [ 'id' ] ]; }
 
     /** @return string[] JSON columns for casts/operations */
     public static function jsonColumns(): array { return []; }
 
     /** @return string[] List of numeric columns (generator heuristic; no runtime DB queries). */
-    public static function intColumns(): array { return [ 'id', 'version', 'is_live' ]; }
+    public static function intColumns(): array { return [ 'id', 'version' ]; }
 
     /** @return array<string,string> alias => column mapping (for input normalization) */
     public static function paramAliases(): array { return []; }

@@ -592,15 +592,29 @@ use OrderByTools, PkTools, RepositoryHelpers;
     // === Generated unique helpers (per table UNIQUE/PK) ===
     
     /** @return array<string,mixed>|\BlackCat\Database\Packages\Tenants\Dto\TenantDto|null */
-    public function getBySlugCiAndIsLive(string $slugCi, int $isLive, bool $asDto = false): array|\BlackCat\Database\Packages\Tenants\Dto\TenantDto|null {
+    public function getBySlugCi(string $slugCi, bool $asDto = false): array|\BlackCat\Database\Packages\Tenants\Dto\TenantDto|null {
+        return $this->getByUnique([ 'slug_ci' => $slugCi ], $asDto);
+    }
+    public function existsBySlugCi(string $slugCi): bool {
+        $where = 't.' . Ident::q($this->db, 'slug_ci') . ' = :uniq_slug_ci';
+        return $this->exists($where, [ 'uniq_slug_ci' => $slugCi ]);
+    }
+    /** @return int|string|null */
+    public function getIdBySlugCi(string $slugCi) {
+        $row = $this->getBySlugCi($slugCi, false);
+        if (!is_array($row)) { return null; }
+        return $row['id'] ?? null;
+    }
+    /** @return array<string,mixed>|\BlackCat\Database\Packages\Tenants\Dto\TenantDto|null */
+    public function getBySlugCiAndIsLive(string $slugCi, bool $isLive, bool $asDto = false): array|\BlackCat\Database\Packages\Tenants\Dto\TenantDto|null {
         return $this->getByUnique([ 'slug_ci' => $slugCi, 'is_live' => $isLive ], $asDto);
     }
-    public function existsBySlugCiAndIsLive(string $slugCi, int $isLive): bool {
+    public function existsBySlugCiAndIsLive(string $slugCi, bool $isLive): bool {
         $where = 't.' . Ident::q($this->db, 'slug_ci') . ' = :uniq_slug_ci' . ' AND ' . 't.' . Ident::q($this->db, 'is_live') . ' = :uniq_is_live';
         return $this->exists($where, [ 'uniq_slug_ci' => $slugCi, 'uniq_is_live' => $isLive ]);
     }
     /** @return int|string|null */
-    public function getIdBySlugCiAndIsLive(string $slugCi, int $isLive) {
+    public function getIdBySlugCiAndIsLive(string $slugCi, bool $isLive) {
         $row = $this->getBySlugCiAndIsLive($slugCi, $isLive, false);
         if (!is_array($row)) { return null; }
         return $row['id'] ?? null;
