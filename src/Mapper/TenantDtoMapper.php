@@ -20,9 +20,9 @@ final class TenantDtoMapper
     private const COL_TO_PROP = [ 'id' => 'id', 'name' => 'name', 'slug' => 'slug', 'slug_ci' => 'slugCi', 'status' => 'status', 'created_at' => 'createdAt', 'updated_at' => 'updatedAt', 'version' => 'version', 'deleted_at' => 'deletedAt', 'is_live' => 'isLive' ];
 
     /** @var string[] */
-    private const BOOL_COLS   = [ 'is_live' ];
+    private const BOOL_COLS   = [];
     /** @var string[] */
-    private const INT_COLS    = [ 'id', 'version' ];
+    private const INT_COLS    = [ 'id', 'version', 'is_live' ];
     /** @var string[] */
     private const FLOAT_COLS  = [];
     /** @var string[] */
