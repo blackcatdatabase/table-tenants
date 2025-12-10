@@ -5,15 +5,15 @@ Top-level tenant/organization records used for multi-tenancy.
 ## Columns
 | Column | Type | Null | Default | Description |
 | --- | --- | --- | --- | --- |
-| created_at | DATETIME(6) | NO | CURRENT_TIMESTAMP(6) | Creation timestamp (UTC). |
-| deleted_at | DATETIME(6) | YES |  | Soft-delete timestamp. |
+| created_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | NO | CURRENT_TIMESTAMP(6) | Creation timestamp (UTC). |
+| deleted_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | YES |  | Soft-delete timestamp. |
 | id | BIGINT | NO |  | Surrogate primary key. |
 | name | VARCHAR(200) | NO |  | Tenant display name. |
 | slug | VARCHAR(200) | NO |  | Canonical slug (unique per tenant). |
-| slug_ci | VARCHAR(200) | YES |  | Lowercase slug used for case-insensitive uniqueness. |
-| status | ENUM('active','suspended','deleted') | NO | active | Tenant status. (enum: active, suspended, deleted) |
-| updated_at | DATETIME(6) | NO | CURRENT_TIMESTAMP(6) | Last update timestamp (UTC). |
-| version | INT | NO | 0 | Optimistic locking version counter. |
+| slug_ci | mysql: VARCHAR(200) / postgres: TEXT | YES |  | Lowercase slug used for case-insensitive uniqueness. |
+| status | mysql: ENUM('active','suspended','deleted') / postgres: TEXT | NO | active | Tenant status. (enum: active, suspended, deleted) |
+| updated_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | NO | CURRENT_TIMESTAMP(6) | Last update timestamp (UTC). |
+| version | mysql: INT / postgres: INTEGER | NO | 0 | Optimistic locking version counter. |
 
 ## Engine Details
 
