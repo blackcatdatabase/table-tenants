@@ -9,11 +9,11 @@ Top-level tenant/organization records used for multi-tenancy.
 | deleted_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | YES |  | Soft-delete timestamp. |
 | id | BIGINT | NO |  | Surrogate primary key. |
 | name | VARCHAR(200) | NO |  | Tenant display name. |
+| slug | VARCHAR(200) | NO |  | Canonical slug (unique per tenant). |
 | slug_ci | mysql: VARCHAR(200) / postgres: TEXT | YES |  | Lowercase slug used for case-insensitive uniqueness. |
 | status | mysql: ENUM('active','suspended','deleted') / postgres: TEXT | NO | active | Tenant status. (enum: active, suspended, deleted) |
-| version | mysql: INT / postgres: INTEGER | NO | 0 | Optimistic locking version counter. |
-| slug | VARCHAR(200) | NO |  | Canonical slug (unique per tenant). |
 | updated_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | NO | CURRENT_TIMESTAMP(6) | Last update timestamp (UTC). |
+| version | mysql: INT / postgres: INTEGER | NO | 0 | Optimistic locking version counter. |
 
 ## Engine Details
 
