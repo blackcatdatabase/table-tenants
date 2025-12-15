@@ -182,8 +182,9 @@ use OrderByTools, PkTools, RepositoryHelpers;
 
     private function doUpsertByKeys(array $row, array $keys, array $updateColumns, bool $revive): void
     {
-        $row  = $this->filterCols($this->normalizeInputRow($row));
         if (!$row && !$keys) return;
+
+        $row = $this->normalizeInputRow($row);
 
         // ensure key values exist in the row (fill from provided keys when missing)
         $isAssoc = $keys && array_keys($keys) !== range(0, count($keys)-1);
@@ -194,6 +195,9 @@ use OrderByTools, PkTools, RepositoryHelpers;
 
         // Revive policy
         [$row, $updCols] = $this->applyUpsertRevivePolicy($row, $updCols, $revive);
+
+        $row  = $this->filterCols($row);
+        if (!$row) return;
 
         [$sql, $params] = UpsertBuilder::buildByKeys(
             $this->db,
@@ -235,8 +239,24 @@ use OrderByTools, PkTools, RepositoryHelpers;
         // Optimized helper (revive mode)
         $helperKeys = $this->resolveUpsertKeys();
         if ($helperKeys && class_exists(\BlackCat\Database\Support\BulkUpsertHelper::class)) {
+          $soft = Definitions::softDeleteColumn();
+          $rows = array_values(array_filter(
+              array_map(function ($r) use ($soft) {
+                  if (!is_array($r)) { return null; }
+                  $r = $this->normalizeInputRow($r);
+                  if ($soft) { $r[$soft] = null; }
+                  $r = $this->filterCols($r);
+                  return $r ?: null;
+              }, $rows),
+              fn($r) => !empty($r)
+          ));
+          if (!$rows) { return 0; }
+
+          $updCols = [];
+          if ($updCols && $soft && !in_array($soft, $updCols, true)) { $updCols[] = $soft; }
+
           $bulk = new \BlackCat\Database\Support\BulkUpsertHelper($this->db, \BlackCat\Database\Packages\Tenants\Definitions::class);
-          $bulk->upsertMany($rows, $helperKeys, []);
+          $bulk->upsertMany($rows, $helperKeys, $updCols);
           return count($rows);
         }
 
@@ -457,6 +477,8 @@ use OrderByTools, PkTools, RepositoryHelpers;
     {
         if (!$keyValues) return null;
         $view = Ident::qi($this->db, Definitions::contractView());
+
+        $keyValues = $this->ingressCriteriaTransform($keyValues);
 
         $parts  = [];
         $params = [];
