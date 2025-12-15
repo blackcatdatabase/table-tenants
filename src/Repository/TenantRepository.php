@@ -29,7 +29,7 @@ use OrderByTools, PkTools, RepositoryHelpers;
     public function __construct(private readonly Database $db) {}
 
     /**
-     * Optionally override the Definitions FQN â€“ trait otherwise infers it from the repository FQN.
+     * Optionally override the Definitions FQN - trait otherwise infers it from the repository FQN.
      */
     protected function def(): string { return \BlackCat\Database\Packages\Tenants\Definitions::class; }
 
@@ -131,7 +131,7 @@ use OrderByTools, PkTools, RepositoryHelpers;
         return [$row, $updateCols];
     }
 
-    /** Standard upsert â€“ preserves soft-delete (no revive). */
+    /** Standard upsert - preserves soft-delete (no revive). */
     public function upsert(#[\SensitiveParameter] array $row): void
     {
         $this->doUpsert($row, false);
@@ -168,7 +168,7 @@ use OrderByTools, PkTools, RepositoryHelpers;
         $this->db->execute($sql, $params);
     }
 
-    /** Upsert by keys â€“ default behavior keeps soft-delete. */
+    /** Upsert by keys - default behavior keeps soft-delete. */
     public function upsertByKeys(array $row, array $keys, array $updateColumns = []): void
     {
         $this->doUpsertByKeys($row, $keys, $updateColumns, false);
@@ -353,7 +353,7 @@ use OrderByTools, PkTools, RepositoryHelpers;
             $params[$k]   = $v;
         }
 
-        // touch â€“ verze/updated_at
+        // touch - version/updated_at
         if ($verCol && $this->isNumericVersion()) {
             $assign[] = Ident::q($this->db, $verCol) . ' = ' . Ident::q($this->db, $verCol) . ' + 1';
         }
