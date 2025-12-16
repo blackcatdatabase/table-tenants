@@ -41,11 +41,11 @@ final class Criteria extends BaseCriteria
         return [ 'name', 'slug', 'slug_ci' ];
     }
 
-/** Columns allowed in ORDER BY (falls back to filterable() when empty). */
-protected function sortable(): array
-{
-    return [ 'id', 'name', 'slug', 'slug_ci', 'status', 'created_at', 'updated_at', 'version', 'deleted_at', 'is_live' ];
-}
+    /** Columns allowed in ORDER BY (falls back to filterable() when empty). */
+    protected function sortable(): array
+    {
+        return [ 'id', 'name', 'slug', 'slug_ci', 'status', 'created_at', 'updated_at', 'version', 'deleted_at', 'is_live' ];
+    }
 
     /**
      * Whitelist of joinable entities (for safe ->join() usage):
